@@ -1,25 +1,36 @@
 ---
 title: "Fundamentos de Estatística"
-subtitle: "Curso para Tribunal de Contas do DF"
-author: "Lucas Matoin"
+author: "Lucas Mation"
 date: "NOV/2015"
-output: ioslides_presentation
+output:
+  ioslides_presentation:
+    incremental: yes
+subtitle: Curso para Tribunal de Contas do DF
 ---
 
+## Sobre o Curso
 
+
+Instrutor: Lucas Mation, IPEA, Economista
+Contato: lucasmation@gmail.com
+
+Os materiais (dados) do curso estão disponíveis em:
+https://github.com/lucasmation/Curso_Fundamentos_da_Estatistica
+
+Slides serão disponibilizados após as aulas
 
 
 ## O que é ESTATISTICA?
 
 Conjunto de téncicas para trabalhar com dados. Duas grandes áraeas:
 
-- Estatística Descritiva
+### Estatística Descritiva
 
-- Análise
+### Análise
 
 ## O que é ESTATISTICA?
 
-Estatística Descritiva
+### Estatística Descritiva  
 
 - Coleta
     - Amostragem, Operacionalização
@@ -30,7 +41,7 @@ Estatística Descritiva
 
 ## O que é ESTATISTICA?
     
-Análise
+### Análise
 
 * Inferência 
 
@@ -67,8 +78,8 @@ Fundamento empírico de diversas áreas.
 - Ciência Política
 - Psicologia
 
-
-
+~ Quanto menos "experimetal/laboratorial" é a ciência, maior é o uso da estatística
+ 
 ## O que é ESTATISTICA?
 
 Diga as áreas da Estatística usadas nas seguintes aplicações? 
@@ -86,11 +97,16 @@ Diga as áreas da Estatística usadas nas seguintes aplicações?
 
 ## Definções
 
-- População: conjunto de todos os elementos de interesse 
+- População: conjunto de todos os elementos de interesse
+
 - Amostra: subconjunto de elementos da população
-- Variável: atributo que descreve um elemento/indivíduo da população, podendo variar entre indivíduos 
+
+- Variável: atributo que descreve um elemento/indivíduo da população, podendo variar entre indivíduos
+
 - Parâmetro: característica mensurável da pupulação (média, desvio padrão)
-- Estatística: característica mensuráve da amostra 
+
+- Estatística: característica mensuráve da amostra
+
 
 
 
@@ -138,27 +154,182 @@ Categórica (qualitativa)
 
 ## Tipos de Variável
 
-Vamos criar um banco de dados com informações dos alunos: 
-Nome, sexo, time de futebol, idade, No Filhos, altura
-
-
-
-## Slide with Bullets
-
-- Bullet 1
-- Bullet 2
-- Bullet 3
-
-## Slide with R Code and Output
+Vamos usar a base de dados  ex1_dados_pessoas.csv
 
 ```{r}
-summary(cars)
+d <- read.csv2('data/ex1_dados_pessoas.csv')
+d
 ```
 
-## Slide with Plot
+## Tipos de Variável
 
 ```{r, echo=FALSE}
-plot(cars)
+library(ggplot2)
+ggplot(d, aes(N_filhos)) + geom_histogram() 
 ```
 
+
+Classifique os tipos de variável da tabela acima
+
+Note a classificação no Brasileirão do time de futebol de Fulana. O que ocorre? Por que?
+
+## Dados e o computador
+
+Investige as "entranhas"" do arquivo ex1_dados_pessoas.csv "internamente". 
+(clicar com botão direito > abrir com > notepad ou wordpad)
+
+qual o separador do arquivo? porque não vírgula?
+
+
+## Minha 1a PNAD
+
+
+Vamos olhar os microdados da PNAD
+
+Visite: http://www.ibge.gov.br/ > populacao (sem clicar) > PNAD > microdados
+
+Abra os microdados
+
+Abra os dicionários importadores
+
+Qual é a lógica?
+
+
+## Minha 1a PNAD
+
+Para facilitar o manuseio, já preparei o script de improtação dos dados. Veja no arquivo:   importa_dados_PNAD_2013.R
+
+```{r}
+#Importando o arquivo no R:
+load('data/pnad2013_pes_mastigada.Rda')
+# importando do CSV:
+# pnad2013_pes <- read.csv2('data/pnad2013_pes_mastigada.Rda')
+summary(pnad2013_pes)
+```
+
+## Histograma
+
+```{r}
+library(ggplot2, dplyr)
+ggplot(pnad2013_pes, aes(idade)) + geom_histogram() 
+```
+
+
+## Histograma
+
+Mudando a largura do intervalo (binwidth)
+```{r}
+ggplot(pnad2013_pes, aes(idade)) + geom_histogram(binwidth = .5) 
+```
+
+## Histograma
+
+Mudando a largura do intervalo (binwidth)
+```{r}
+ggplot(pnad2013_pes, aes(idade)) + geom_histogram(binwidth = 5) 
+```
+
+## Histograma
+
+Mudando a largura do intervalo (binwidth)
+```{r}
+ggplot(pnad2013_pes, aes(idade)) + geom_histogram(binwidth = 10) 
+```
+
+## Histograma
+
+Mudando a largura do intervalo (binwidth)
+```{r}
+ggplot(pnad2013_pes, aes(idade)) + geom_histogram(binwidth = 20) 
+```
+
+## Grafico de pontos (scatter plot)
+```{r}
+library(dplyr)
+pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(y=renda_total,x=idade,, colour = sexo)) + geom_point()
+
+
+```
+
+## Grafico de pontos (scatter plot)
+```{r}
+pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(y=renda_total,x=idade,, colour = sexo)) + geom_point(alpha=0.5)
+
+
+```
+
+
+## Medidas de Tendência Central
+
+
+### Média
+
+Populacional 
+
+$$\mu = \sum_{i=1}^{N} X_i$$
+
+Amostral
+
+$$\bar{x} = \sum_{i=1}^{\widetilde{N}} X_i$$
+
+
+## Medidas de Tendência Central
+
+### Mediana
+
+Valor do meio de uma lista ordenada de números. 
+Populacional 
+
+Tercíis, quatíis, quintiis, etc: marcam pontos especificos que dividem os elementos em 3, 4, 5 grupo, respectivaemente, em função da variável usada para ordenar as observações
+
+### MOda: 
+
+Valor mais comum de uma lista de números.
+
+## Medidas de Tendência Central
+
+Em um país com renda extremamente desigual, o que é maior, a média ou a mediana?
+
+Encontre a moda dos salários no Brasil
+
+```{r}
+library(dplyr)
+pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(renda_total)) + geom_histogram(binwidth =100) 
+```
+
+## Summary
+
+```{r}
+summary(pnad2013_pes) 
+```
+
+
+## Medidas de Dispersão
+
+
+### Variância
+
+Populacional: 
+$$\sigma^2 = \frac{\sum_{i=1}^{N}(x_i - \mu)^2} {N}$$
+
+Amostral: 
+$$\S^2 = \frac{\sum_{i=1}^{\widetilde{N}}(x_i - \bar{x})^2} {\widetilde{N}-1}$$
+
+
+## Medidas de Dispersão
+
+
+### Desvios Padrão
+
+Raiz quadrada da variância:   $\sigma = \sqrt{\sigma^2}$  , $\S = \sqrt{\S^2}$, respectivamente. Retoma a dimensionalidade da variável original. 
+
+### Coeficiente de variação
+
+cv=\frac{S} {\bar{x}} *100$$
+
+por ser vidido pela média se torna adimensional
+
+## Estatísticas
+
+Calcule a média, mediana, moda, desvio padrão, e coeficiente de variáção da "renda_total" da Pnad. 
 
