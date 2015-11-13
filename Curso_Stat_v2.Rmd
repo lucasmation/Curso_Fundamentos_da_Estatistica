@@ -1,0 +1,164 @@
+---
+title: "Fundamentos de Estatística"
+subtitle: "Curso para Tribunal de Contas do DF"
+author: "Lucas Matoin"
+date: "NOV/2015"
+output: ioslides_presentation
+---
+
+
+
+
+## O que é ESTATISTICA?
+
+Conjunto de téncicas para trabalhar com dados. Duas grandes áraeas:
+
+- Estatística Descritiva
+
+- Análise
+
+## O que é ESTATISTICA?
+
+Estatística Descritiva
+
+- Coleta
+    - Amostragem, Operacionalização
+- Organização/Manipulação 
+    - Softwares Estatísticos , Progamação
+- Apresentação 
+    - Graficos, tabelas com estatísticas descritivas
+
+## O que é ESTATISTICA?
+    
+Análise
+
+* Inferência 
+
+    - Estmimar características/parâmetros desconhecidos da população a partir de de dados amostrais
+    
+    - Previsão
+    
+    - Teste de Hopóteses
+    
+* Busca de causalidade 
+    - corr $\neq$ causalidade!
+    
+    - Regressão: métodos que permitem controlar para variáveis observáveis 
+    
+    - Experimentos Naturais
+
+
+## O que é ESTATISTICA?
+
+Diagrama fundamental da Estatística
+
+![alt text](figures/Diagrama_populacao_amostra.png)
+
+
+
+## O que é ESTATISTICA?
+
+Fundamento empírico de diversas áreas.  
+
+- Medicina
+- Socilologia 
+- Economia
+- Epidemeologia
+- Ciência Política
+- Psicologia
+
+
+
+## O que é ESTATISTICA?
+
+Diga as áreas da Estatística usadas nas seguintes aplicações? 
+
+- Calculo do salário médio no Brasil 
+    - Suponha dados censitários
+    - Agora suponha dados amostrais. O que muda?
+    - Há diferença salarial entre homens e mulheres?
+    - Isso se deve a discriminação ou outros fatores?
+    
+- Previsão do tempo
+
+- Efeito da corrupção no crescimento econômico
+
+
+## Definções
+
+- População: conjunto de todos os elementos de interesse 
+- Amostra: subconjunto de elementos da população
+- Variável: atributo que descreve um elemento/indivíduo da população, podendo variar entre indivíduos 
+- Parâmetro: característica mensurável da pupulação (média, desvio padrão)
+- Estatística: característica mensuráve da amostra 
+
+
+
+## Notação
+
+
+- $\sum_{i=1}^{n} X_i$ : Somatório de $X_1$ a $X_n$ 
+
+- $\mu$  :  Média populacional
+
+- $\bar{x}$ : Média amostral
+
+- $\sigma^2$, var(X) : Variância
+
+- $\sigma$, std(X) , dp(X) :  Desvio Padrão   
+
+
+## Notação
+
+
+- $p\left({x}\right)$, $p_X\left({x}\right)$: probabilidade do evento $x$ ocorrer
+
+- $p\left({a \mid b}\right)$ : prob. de a dado b
+
+- $p\left({a \cup b}\right)$ : prob. de a OU b
+
+- $p\left({a \cap b}\right)$ : prob. de a E b
+
+
+## Tipos de Variável
+
+Numéricas (quantitativas):
+
+- Contínuas
+
+- Inteiras
+
+Categórica (qualitativa)
+
+- Nomanial
+  
+    - Binária (Dicotomica)
+  
+- Ordinal
+
+## Tipos de Variável
+
+Vamos criar um banco de dados com informações dos alunos: 
+Nome, sexo, time de futebol, idade, No Filhos, altura
+
+
+
+## Slide with Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## Slide with R Code and Output
+
+```{r}
+summary(cars)
+```
+
+## Slide with Plot
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+
