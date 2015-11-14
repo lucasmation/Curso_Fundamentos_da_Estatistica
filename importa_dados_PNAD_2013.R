@@ -23,8 +23,16 @@ read.csv( "pnad2013/dados/pes2013.csv" , sep = "\t") %>%
 #renomeando as variáveis
 names(pnad2013_pes) <- c('sexo','idade','raca','horas_trabalhadas','anos_de_estudo','renda_total','peso_pes')
 
-#acertando valor aberrante de salário:
+#atribuindo os labels das categóricas, definindo-as como fatores
+pnad2013_pes %>% mutate( sexo = factor(sexo),
+                         raca = factor(raca)) -> pnad2013_pes 
+levels(pnad2013_pes$sexo) <- c('M','F')
+levels(pnad2013_pes$raca) <- c('Indígena','Branca','Preta','Amarela','Parda', 'Amarela','Sem declaração')
 
+
+
+#acertando valor aberrante de salário:
+pnad2013_pes$sexo <- factor(pnad2013_pes$sexo,c('M','F'))
 pnad2013_pes %>% filter(renda_total<100000000) -> pnad2013_pes
 
 #Salvando em CSV e formato .Rda

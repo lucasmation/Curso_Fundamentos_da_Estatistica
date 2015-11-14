@@ -5,7 +5,7 @@ date: "NOV/2015"
 output:
   ioslides_presentation:
     incremental: yes
-subtitle: Curso para Tribunal de Contas do DF
+subtitle: Curso para Tribunal de Contas de GO
 ---
 
 ## Sobre o Curso
@@ -22,7 +22,7 @@ Slides serão disponibilizados após as aulas
 
 ## O que é ESTATISTICA?
 
-Conjunto de téncicas para trabalhar com dados. Duas grandes áraeas:
+Conjunto de técnicas para trabalhar com dados. Duas grandes áraeas:
 
 ### Estatística Descritiva
 
@@ -95,7 +95,7 @@ Diga as áreas da Estatística usadas nas seguintes aplicações?
 - Efeito da corrupção no crescimento econômico
 
 
-## Definções
+## Definições
 
 - População: conjunto de todos os elementos de interesse
 
@@ -207,20 +207,88 @@ load('data/pnad2013_pes_mastigada.Rda')
 summary(pnad2013_pes)
 ```
 
-## Histograma
+## Tabelas de Fequência
+
+Contam o número de observações de: 
+
+ - categorias (categóricas) ou numéricas discretas
+ 
+ - intervalos de números inteiros (ex: 0-9, 10-19, etc)
+
+###Exercício: 
+
+A partir dos dados em **ex1_dados_pessoas.csv**, crie a tabela de frequências da variável sexo.
+
+- Primeiro faça "manualmente"
+
+
+## Tabelas de Fequência
+
+###Exercício: tabela de frequências
+
+A partir dos dados em **ex1_dados_pessoas.csv**, crie a  da variável sexo.
+
+- Tente replicar esta tabela usando o software (Excel Ou R) .Dicas:
+    - No Excel: Você pode usar a função **=CONT.SE()** . Ou também uma Tabela Dinâmica
+    - No R selecione a variável sexo com *pnad2013_pes$sexo*. Use a função *table()* 
+- Tente adicionar a "frequencia relativa" (quantos % da amostra cada categoria representa) 
+- Faça um gráfico de barras do resultado desta tabela
+
+## Tabelas de Fequência
+
+Solução No Excel: 
+
+- =count.se()
+![alt text](figures/imagen_cont_se_Excel.png)
+
+
+
+## Tabelas de Fequência
+
+Solução No R: 
 
 ```{r}
-library(ggplot2, dplyr)
-ggplot(pnad2013_pes, aes(idade)) + geom_histogram() 
+d <- read.csv2('data/ex1_dados_pessoas.csv')
+table(d$Sexo)
+#melhorando a formatação
+as.data.frame(table(d$Sexo))
+```
+
+
+## Tabelas de Fequência
+
+Solução No R: 
+
+```{r}
+barplot(table(d$Sexo))
+```
+
+
+## Tabelas de Fequência
+
+Agora calcule a tabela de frequencia por raça com os dados da PNAD. 
+
+Solução no Excel:
+
+- uma saida seria replicar o que foi feito anteriormente (=cont.se())
+- Outra possibilidade é uma tabela dinamica (demonstrar em aula)
+
+## Tabelas de Fequência
+
+Solução No R: 
+
+```{r}
+d <- read.csv2('data/pnad2013_pes_mastigada.csv')
+as.data.frame(table(d$sexo))
 ```
 
 
 ## Histograma
 
-Mudando a largura do intervalo (binwidth)
 ```{r}
 ggplot(pnad2013_pes, aes(idade)) + geom_histogram(binwidth = .5) 
 ```
+
 
 ## Histograma
 
@@ -247,8 +315,6 @@ ggplot(pnad2013_pes, aes(idade)) + geom_histogram(binwidth = 20)
 ```{r}
 library(dplyr)
 pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(y=renda_total,x=idade,, colour = sexo)) + geom_point()
-
-
 ```
 
 ## Grafico de pontos (scatter plot)
@@ -259,6 +325,16 @@ pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(y=renda_total,x=idade,
 ```
 
 
+## Graficos e Tabelas: Formatação
+
+Dicas de fomtação:
+
+Gráfico de pizza? Não usar! [Veja aqui porque](http://darkhorseanalytics.com/blog/wp-content/uploads/2014/09/devourThePie3.gif)
+ 
+Tabelas: preferencialmente sem cores e linhas internas, etc. [Bom exempolo aqui](http://urbandemographics.blogspot.co.uk/2014/08/how-to-make-your-tables-less-terrible.html)
+
+
+
 ## Medidas de Tendência Central
 
 
@@ -266,21 +342,20 @@ pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(y=renda_total,x=idade,
 
 Populacional 
 
-$$\mu = \sum_{i=1}^{N} X_i$$
+$$\mu = \frac{\sum_{i=1}^{N} X_i} {N}$$
+
 
 Amostral
 
-$$\bar{x} = \sum_{i=1}^{\widetilde{N}} X_i$$
+$$\bar{x} = \frac{\sum_{i=1}^{ {N}} X_i} {N}$$
 
 
 ## Medidas de Tendência Central
 
 ### Mediana
 
-Valor do meio de uma lista ordenada de números. 
-Populacional 
+Valor do meio de uma lista ordenada de números.
 
-Tercíis, quatíis, quintiis, etc: marcam pontos especificos que dividem os elementos em 3, 4, 5 grupo, respectivaemente, em função da variável usada para ordenar as observações
 
 ### MOda: 
 
@@ -294,7 +369,7 @@ Encontre a moda dos salários no Brasil
 
 ```{r}
 library(dplyr)
-pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(renda_total)) + geom_histogram(binwidth =100) 
+pnad2013_pes %>% filter(renda_total<10000) %>% ggplot(aes(renda_total)) + geom_histogram(binwidth =10) 
 ```
 
 ## Summary
@@ -325,11 +400,176 @@ Raiz quadrada da variância:   $\sigma = \sqrt{\sigma^2}$  , $\S = \sqrt{\S^2}$, 
 
 ### Coeficiente de variação
 
-cv=\frac{S} {\bar{x}} *100$$
+$$cv=\frac{S} {\bar{x}} *100$$
 
-por ser vidido pela média se torna adimensional
+## Medidas de Dispersão
 
-## Estatísticas
+## Graficos e Tabelas: Formatação
 
-Calcule a média, mediana, moda, desvio padrão, e coeficiente de variáção da "renda_total" da Pnad. 
+Dicas de fomatação:
 
+Gráfico de pizza? Não usar! [Veja aqui porque](http://darkhorseanalytics.com/blog/wp-content/uploads/2014/09/devourThePie3.gif)
+ 
+Tabelas: preferencialmente sem cores e linhas internas, etc. [Bom exempolo aqui](http://urbandemographics.blogspot.co.uk/2014/08/how-to-make-your-tables-less-terrible.html)
+
+
+## Distribuição 
+
+Distribuição dos valores de x
+
+```{r, echo=FALSE, message=FALSE, cache=FALSE, warning=FALSE}
+library(ggplot2)
+dt <- data.frame(x=c(1:20000),y=rnorm(20000)+5)
+dens <- density(dt$y)
+df <- data.frame(x=dens$x, y=dens$y)
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y)) + scale_x_continuous()
+```
+
+
+## Percentis
+
+Definição: Valor da variável abaixo do qual está certo percentual das observações. 
+
+Percentis de interesse:
+
+- 25%, 50% e 75%: tambem chamados de "quartis" pois dividem as observações quatro grupos
+- 1% e 99% (ou 5% e 95%): permitem identificar valores aberrantes, discrepantes
+
+## Percentis
+
+O percentil 25%, também conhecido como 1o quartil
+
+```{r, echo=FALSE, message=FALSE, cache=FALSE, warning=FALSE}
+probs <- c(0.25)
+quantiles <- quantile(dt$y, prob=probs)
+x <- round(as.numeric(quantiles),digits=2)
+df$quant <- factor(findInterval(df$x,quantiles))
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=x) + scale_fill_brewer(guide="none")
+```
+
+## Percentis
+
+O percentil 50%, também conhecido como *mediana*
+
+```{r, echo=FALSE, message=FALSE, cache=FALSE, warning=FALSE}
+probs <- c(0.5)
+quantiles <- quantile(dt$y, prob=probs)
+x <- round(as.numeric(quantiles),digits=2)
+df$quant <- factor(findInterval(df$x,quantiles))
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=x) + scale_fill_brewer(guide="none")
+```
+
+## Percentis
+
+O percentil 75%, também conhecido como 3o quartil
+
+```{r, echo=FALSE, message=FALSE, cache=FALSE, warning=FALSE}
+probs <- c(0.75)
+quantiles <- quantile(dt$y, prob=probs)
+x <- round(as.numeric(quantiles),digits=2)
+df$quant <- factor(findInterval(df$x,quantiles))
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=x) + scale_fill_brewer(guide="none")
+```
+
+
+## Percentis
+
+"Amplitude inter quartil": intervalo entre o 1o e o 3o quartis
+
+```{r, echo=FALSE, message=FALSE, cache=FALSE, warning=FALSE}
+probs <- c(0.25 , 0.75)
+quantiles <- quantile(dt$y, prob=probs)
+x <- round(as.numeric(quantiles),digits=2)
+df$quant <- factor(findInterval(df$x,quantiles))
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=x) + scale_fill_brewer(guide="none")
+```
+
+## Percentis
+
+Outliers: percentis 1%  e 99% 
+```{r, echo=FALSE, message=FALSE, cache=FALSE, warning=FALSE}
+probs <- c(0.01, 0.99)
+quantiles <- quantile(dt$y, prob=probs)
+x <- round(as.numeric(quantiles),digits=2)
+df$quant <- factor(findInterval(df$x,quantiles))
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=x) + scale_fill_brewer(guide="none")
+```
+
+## Percentis
+
+Outliers: percentis 1%  e 99% 
+```{r, echo=FALSE, message=FALSE, cache=FALSE, warning=FALSE}
+probs <- c(0.01, 0.99)
+quantiles <- quantile(dt$y, prob=probs)
+x <- round(as.numeric(quantiles),digits=2)
+df$quant <- factor(findInterval(df$x,quantiles))
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=x) + scale_fill_brewer(guide="none")
+```
+
+
+
+
+
+### Percentis
+```{r, echo=FALSE, message=FALSE}
+dt <- data.frame(x=c(1:200),y=rnorm(200))
+dens <- density(dt$y)
+df <- data.frame(x=dens$x, y=dens$y)
+probs <- c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75, 0.9, 0.95, 0.99)
+quantiles <- quantile(dt$y, prob=probs)
+df$quant <- factor(findInterval(df$x,quantiles))
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=quantiles) + scale_fill_brewer(guide="none")
+```
+
+## Medidas de Dispersão
+
+
+### Amplitude
+
+Diferença entre o menor e maior valor da variável. 
+
+
+### Amplitude inter-quartil
+
+Diferença entre o o 1o e 3o quartis. 
+Após ordenar a variável, computar o percentil 
+
+
+## Amostragem
+
+Tipos de Amostras:
+
+- Probabilistica/Aleatória
+    - Simples
+        - Sistemática
+    - Conglomerada
+    - Esrtatificada
+- Não Probabilístia
+    - Por Cotas
+    - Por Conveniencia(voluntária)
+
+
+## Amostragem
+
+Vamos discutir os tipos de amostras nestes 3 tipos de pesquisa:
+
+PNAD
+CENSO Demográfico (questionário detalhado)
+Pesquisas Eleitorais
+
+
+## Notação
+
+- N: tamanho da população
+- n: tamanho da amostra
+- $f=\frac{n} {N}$ : fração amostral
+
+Como determinar *n* ?
+
+$$n=(\frac{z'*\sigma} {MDE})^2$$
+
+Onde: 
+
+- z' : limintes dos intervalos de confiança
+- $\sigma$ : desvio padrão populacional. Estimado pelo desvio padrão encontrado no pré-teste, ou pesquisas anteriores 
+- MDE: margen de erro
